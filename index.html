@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Donation</title>
+    <meta name="theme-color" content="#e10a17"/> <!-- Theme color for PWA -->
+    <link rel="icon" type="image/x-icon" href="icon-01.png"> <!-- Favicon Link -->
+    <link rel="manifest" href="manifest.json"> <!-- Link to Manifest -->
+    <link rel="apple-touch-icon" href="icon-192x192.png"> <!-- Basic iOS icon -->
+
+    <style>
+        /* Basic Reset & Body Styles */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            padding-top: 20px;
+            padding-bottom: 40px;
+        }
+
+        /* --- Animation Definitions --- */
+        @keyframes fadeSlideUp {
+            from {
+                opacity: 0;
+                transform: translateY(15px); /* Start slightly lower */
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0); /* End at normal position */
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.3); opacity: 0.7; }
+        }
+
+        @keyframes scaleIn {
+             from { transform: translate(-50%, -50%) scale(0); opacity: 0; }
+             to { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+        }
+
+
+        /* Main Container */
+        .container {
+            background-color: #ffffff;
+            width: 100%;
+            max-width: 400px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* --- Staggered Animation Setup --- */
+        /* Initially hide elements that will be animated in */
+        .header,
+        .content > .top-bar,
+        .content > .recipient-info,
+        .content > .separator,
+        .qr-code-container,
+        .qr-overlay, /* Hide overlay initially for its own animation */
+        .instructions,
+        .bank-scanner-link,
+        #thank-you-gif-container,
+        .content > .footer-text,
+        .footer-social {
+            opacity: 0; /* Start hidden */
+        }
+
+        /* Apply animation with delays */
+        .header {
+            animation: fadeSlideUp 0.5s 0.1s ease-out forwards;
+        }
+        .content > .top-bar {
+             animation: fadeSlideUp 0.5s 0.2s ease-out forwards;
+        }
+        .content > .recipient-info {
+            animation: fadeSlideUp 0.5s 0.3s ease-out forwards;
+        }
+         .content > .separator {
+            animation: fadeSlideUp 0.5s 0.35s ease-out forwards;
+         }
+        .qr-code-container {
+            animation: fadeSlideUp 0.5s 0.4s ease-out forwards;
+        }
+         /* QR Overlay animation defined directly below */
+        .instructions {
+            animation: fadeSlideUp 0.5s 0.7s ease-out forwards; /* Delay slightly more after QR overlay */
+        }
+        #open-aba-scanner-btn {
+            animation: fadeSlideUp 0.5s 0.8s ease-out forwards;
+        }
+         #open-acleda-scanner-btn {
+            animation: fadeSlideUp 0.5s 0.9s ease-out forwards;
+         }
+        #thank-you-gif-container {
+             animation: fadeSlideUp 0.5s 1.0s ease-out forwards;
+        }
+        .content > .footer-text {
+             animation: fadeSlideUp 0.5s 1.1s ease-out forwards;
+        }
+        .footer-social {
+             animation: fadeSlideUp 0.5s 1.2s ease-out forwards;
+        }
+
+        /* Header Section */
+        .header {
+            background-color: #e10a17; color: white; padding: 15px 20px;
+            display: flex; justify-content: space-between; align-items: center;
+            min-height: 55px; flex-shrink: 0;
+        }
+        .header-brand {
+            font-size: 0.9em; opacity: 0.9; font-weight: bold;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.2); align-self: center;
+        }
+        .header-khqr-logo {
+            font-weight: bold; font-size: 1.4em; position: relative;
+            padding-right: 18px; line-height: 1; display: flex; align-items: center;
+        }
+        .header-khqr-logo::before, .header-khqr-logo::after {
+            content: ''; position: absolute; right: 0; height: 2px;
+            background-color: white; width: 12px;
+        }
+        .header-khqr-logo::before { transform: translateY(-4px); }
+        .header-khqr-logo::after { transform: translateY(4px); }
+
+        /* Main Content Area */
+        .content {
+            padding: 25px 20px; text-align: center; flex-grow: 1; position: relative;
+        }
+
+        /* Top Bar: Title & Timer */
+        .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
+        .title { font-weight: bold; font-size: 1.4em; color: #333; text-align: left; }
+        .timer { display: flex; align-items: center; font-size: 1em; font-weight: 500; color: #555; transition: color 0.3s ease; }
+        .timer-icon {
+            width: 20px; height: 20px; border: 3px solid #00a2e8; border-radius: 50%;
+            margin-right: 8px; position: relative; display: flex; justify-content: center;
+            align-items: center; transition: border-color 0.3s ease;
+        }
+        .timer-icon::before {
+            content: ''; display: block; width: 8px; height: 8px; background-color: #00a2e8;
+            border-radius: 50%; transition: background-color 0.3s ease;
+            /* Add pulse animation */
+            animation: pulse 2s infinite ease-in-out;
+        }
+        /* Stop pulsing when expired */
+        .expired .timer-icon::before {
+            animation: none; /* Stop the pulse */
+            background-color: #e10a17; /* Ensure color stays red */
+        }
+
+        /* Recipient Info */
+        .recipient-info { margin-bottom: 20px; }
+        .recipient-name { font-size: 0.9em; color: #666; margin-bottom: 8px; text-transform: uppercase; }
+
+        /* Separator */
+        .separator { border: none; border-top: 2px dashed #ddd; margin: 20px 0; }
+
+        /* QR Code */
+        .qr-code-container {
+            margin-bottom: 20px; position: relative; display: inline-block;
+            max-width: 250px; width: 80%; cursor: pointer;
+        }
+        .qr-code-img {
+            display: block; border-radius:10px; width: 100%; height: auto; border: 1px solid #eee;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            transition: opacity 0.3s ease, filter 0.3s ease, transform 0.25s ease-in-out, box-shadow 0.25s ease-in-out;
+        }
+        .container:not(.expired) .qr-code-container:hover .qr-code-img {
+            transform: scale(1.03);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12); /* Enhanced shadow */
+        }
+        .container.expired .qr-code-container:hover .qr-code-img { transform: none; box-shadow: none; }
+        .qr-overlay {
+             position: absolute; top: 50%; left: 50%;
+             transform: translate(-50%, -50%); /* Base transform */
+             background-color: white; border-radius: 50%; width: 30px; height: 30px;
+             display: flex; justify-content: center; align-items: center;
+             box-shadow: 0 0 5px rgba(0,0,0,0.2); border: 3px solid #f0f0f0;
+             transition: opacity 0.3s ease; pointer-events: none;
+             /* Animated in via keyframes */
+             opacity: 0; /* Already set above, but good to keep explicit */
+             animation: scaleIn 0.4s 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+        .qr-overlay span { font-size: 14px; font-weight: bold; color: black; }
+
+        /* Instructions */
+        .instructions { margin-top: -10px; margin-bottom: -25px; transition: opacity 0.3s ease; }
+        .scan-text { font-size: 1.1em; font-weight: 500; color: #333; margin-bottom: 5px; }
+        .or-text { font-size: 0.9em; color: #777; margin-bottom: 35px; }
+
+        /* --- Button Styles (Shared & Individual) --- */
+        .bank-scanner-link {
+             display: inline-flex;
+             align-items: center;
+             justify-content: flex-start;
+             text-decoration: none; font-size: 20px; font-weight: bold;
+             color: white; cursor: pointer;
+             border: 1px solid transparent; border-radius: 5px;
+             transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out, transform 0.15s ease-in-out, border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out, opacity 0.2s ease-in-out;
+             outline: none; margin-bottom: 15px;
+             width: 90%; max-width: 250px;
+             padding: 8px 18px;
+             margin-left: auto;
+             margin-right: auto;
+             overflow: hidden;
+             min-height: 50px;
+        }
+        .bank-scanner-link:focus-visible {
+             box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.15);
+        }
+        .bank-scanner-link:hover {
+             transform: translateY(-2px);
+        }
+         .bank-scanner-link:active {
+             transform: translateY(1px) scale(0.98); /* Added scale */
+             transition-duration: 0.05s;
+        }
+
+        .bank-scanner-link img.bank-icon {
+            width: 39px; height: 39px;
+            border: solid 3px #fff; border-radius: 30px;
+            background-color: #fff;
+            margin-right: 12px;
+            flex-shrink: 0;
+        }
+
+        .bank-scanner-link span {
+             flex-grow: 1;
+             text-align: center;
+        }
+
+        #open-aba-scanner-btn {
+             background-color: #003c71; border-color: #003c71;
+        }
+        #open-aba-scanner-btn:hover { background-color: #005099; }
+        #open-aba-scanner-btn:active { background-color: #002b50; }
+        #open-aba-scanner-btn:focus-visible { border-color: #005099; box-shadow: 0 0 0 2px rgba(0, 60, 113, 0.3); }
+
+         #open-acleda-scanner-btn {
+             background-color: #AE0000; border-color: #AE0000;
+        }
+        #open-acleda-scanner-btn:hover { background-color: #C40000; }
+        #open-acleda-scanner-btn:active { background-color: #8C0000; }
+        #open-acleda-scanner-btn:focus-visible { border-color: #C40000; box-shadow: 0 0 0 2px rgba(174, 0, 0, 0.3); }
+
+        /* Thank You Text */
+        .amount {
+            font-size: 1.1em; font-weight: bold; color: #003366;
+            line-height: 1.3; word-wrap: break-word;
+            margin-top: 15px;
+            margin-bottom: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        /* Thank You GIF Container */
+        #thank-you-gif-container {
+            display: block;
+            position: relative;
+            margin-top:10px;
+            margin-bottom: -10px;
+            z-index: 10;
+            pointer-events: none;
+            text-align: center;
+        }
+        #thank-you-gif {
+            max-width: 150px;
+            max-height: 150px;
+            height: auto; border-radius: 5px; display: inline-block;
+            pointer-events: auto;
+        }
+
+        /* Footer Text */
+        .footer-text {
+            font-size: 0.8em; color: #888; margin-top: 20px;
+             line-height: 1.4; position: relative; z-index: 5;
+            transition: opacity 0.3s ease;
+        }
+
+        /* Footer Social Section */
+        .footer-social {
+            background-color: #f8f9fa; padding: 15px 20px; text-align: center;
+            border-top: 1px solid #eee; flex-shrink: 0;
+        }
+
+        /* Telegram Link */
+        .telegram-link {
+            display: inline-flex; align-items: center; text-decoration: none;
+            color: #0088cc; font-size: 0.9em; font-weight: 500;
+            padding: 8px 12px; border: 1px solid transparent; border-radius: 5px;
+            transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out, transform 0.15s ease-in-out, border-color 0.2s ease-in-out;
+            outline: none;
+        }
+        .telegram-link:focus-visible { border-color: #0088cc; box-shadow: 0 0 0 2px rgba(0, 136, 204, 0.25); }
+        .telegram-link:hover { background-color: #e9f5ff; color: #0077b3; transform: translateY(-2px); }
+        .telegram-link:active { transform: translateY(1px); background-color: #d5effc; transition-duration: 0.05s; }
+        .telegram-link img {
+            width: 22px; height: 22px; margin-right: 8px; vertical-align: middle;
+            transition: transform 0.2s ease-in-out;
+        }
+        .telegram-link:hover img { transform: scale(1.1) rotate(-5deg); }
+
+        /* --- State: Expired --- */
+        .expired .qr-code-img { filter: grayscale(80%); }
+        .expired .qr-code-container { cursor: default; }
+        .expired .bank-scanner-link {
+            pointer-events: none; cursor: default;
+            transform: none !important; /* Override active state */
+            box-shadow: none !important;
+            background-color: #cccccc !important;
+            color: #888888 !important;
+            border-color: #cccccc !important;
+        }
+
+        /* --- Ensure animation is disabled if expired on load --- */
+        /* And set correct final opacity for expired state */
+        .expired .header,
+        .expired .content > .top-bar,
+        .expired .content > .recipient-info,
+        .expired .content > .separator,
+        .expired .qr-code-container,
+        .expired .qr-overlay, /* Include overlay */
+        .expired .instructions,
+        .expired .bank-scanner-link,
+        .expired #thank-you-gif-container,
+        .expired .content > .footer-text,
+        .expired .footer-social {
+            animation: none;
+            opacity: 1; /* Default visibility if expired */
+        }
+        /* Override opacity for elements dimmed by .expired */
+         .expired .instructions,
+         .expired .footer-text,
+         .expired .amount,
+         .expired #thank-you-gif-container { opacity: 0.6 !important; }
+         .expired .qr-code-img { opacity: 0.3 !important; }
+         .expired .qr-overlay { opacity: 0 !important; } /* Explicitly hide overlay when expired */
+         .expired .bank-scanner-link { opacity: 0.5 !important; }
+         .expired .timer { color: #e10a17 !important; }
+         .expired .timer-icon { border-color: #e10a17 !important; }
+         /* timer-icon::before animation/color handled separately */
+        /* Accessibility: Remove focus styles when disabled */
+        .expired .bank-scanner-link:focus-visible,
+        .expired .telegram-link:focus-visible { border-color: transparent; box-shadow: none; outline: none; }
+
+
+        /* Accessibility: Respect user preference for reduced motion */
+        @media (prefers-reduced-motion: reduce) {
+          .header,
+          .content > .top-bar,
+          .content > .recipient-info,
+          .content > .separator,
+          .qr-code-container,
+          .qr-overlay, /* Include overlay */
+          .instructions,
+          .bank-scanner-link,
+          #thank-you-gif-container,
+          .content > .footer-text,
+          .footer-social {
+            animation: none; /* Turn off animation */
+            opacity: 1; /* Ensure elements are visible */
+          }
+          .timer-icon::before {
+             animation: none; /* Turn off pulse */
+          }
+          /* Still apply expired dimming if needed when motion is reduced */
+           .expired .instructions,
+           .expired .footer-text,
+           .expired .amount,
+           .expired #thank-you-gif-container { opacity: 0.6 !important; }
+           .expired .qr-code-img { opacity: 0.3 !important; }
+           .expired .qr-overlay { opacity: 0 !important; }
+           .expired .bank-scanner-link { opacity: 0.5 !important; }
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container" id="payment-container">
+        <!-- Header -->
+        <header class="header">
+             <span class="header-brand">OZO. DESIGNER </span>
+             <span class="header-khqr-logo">KHQR</span>
+        </header>
+
+        <!-- Main Content -->
+        <main class="content">
+            <!-- Top Bar -->
+            <div class="top-bar">
+                <span class="title">PAY ME A COFFEE</span>
+                <div class="timer">
+                    <span class="timer-icon"></span>
+                    <!-- Set your desired initial time here -->
+                    <span id="time-left">10:53</span>
+                </div>
+            </div>
+
+            <!-- Recipient Info -->
+            <div class="recipient-info">
+                <div class="recipient-name">Ozo. Designer</div>
+            </div>
+
+            <!-- Separator -->
+            <hr class="separator">
+
+            <!-- QR Code Container -->
+            <div class="qr-code-container" title="Scan QR Code">
+                <img src="qr.PNG"
+                     alt="ABA KHQR Code for Donation to Ozo. Designer"
+                     class="qr-code-img"
+                     id="qr-code">
+                 <div class="qr-overlay">
+                    <span>$</span>
+                </div>
+            </div>
+
+            <!-- Instructions -->
+            <div class="instructions">
+                <div class="scan-text">SCAN TO PAY</div>
+                <div class="or-text">OR</div>
+            </div>
+
+            <!-- Open ABA Scanner Button -->
+            <a id="open-aba-scanner-btn" class="bank-scanner-link" href="https://pay.ababank.com/j87hqyxC5ntRmRjX9">
+                <img class="bank-icon" src="aba.PNG" alt="ABA Bank Icon">
+                <span>ABA PAY</span>
+            </a>
+            <!-- Open ACLEDA Scanner Button -->
+            <a id="open-acleda-scanner-btn" class="bank-scanner-link" href="https://acledabank.com.kh/acleda?payment_data=qWY5B2SAUfIhLblxzOtfu8yRyA1YGYQ90srEOvcavYJBT7ptJoQ/SGg9AR8Hv+vUYIjrjjopbU7ERsCGlpvj6bCqNPJOyIHFHNGFU8S/FiKNZ/wUzgY/wXVrAwG1Ve7NdijLbmZA4ujdJesRuDN4xqoQtXSG9ruibRasZJSia+nqp6Jq+dOHdihQ/YCiNjPygjAtil95ToBA/Vs1BQCSdzxz6xt9nQKvQuOWQMTnpKyfhw/yATbmMDSFaUEynvlO&key=khqr">
+                <img class="bank-icon" src="acleda.PNG" alt="ACLEDA Bank Icon">
+                <span>ACLEDA PAY</span>
+            </a>
+
+            <!-- Thank You GIF Container (Visible by default) -->
+            <div id="thank-you-gif-container">
+                <img id="thank-you-gif" src="Thank.gif" alt="Thank You!">
+                 <div class="amount">
+                        THANK FOR DONATION<span class="currency"></span>
+                </div>
+            </div>
+
+            <!-- Footer Text -->
+            <p class="footer-text">
+                by Ozo. Designer
+            </p>
+
+        </main> <!-- End of main content -->
+
+        <!-- Footer with Social Icon -->
+        <footer class="footer-social">
+            <a href="https://t.me/m11mmm112" target="_blank" rel="noopener noreferrer" class="telegram-link" aria-label="Contact us on Telegram">
+                <img src="telegram.png" alt="Telegram Icon">
+                <span>Join on Telegram</span>
+            </a>
+        </footer>
+
+    </div> <!-- End of container -->
+
+    <script>
+        // --- DOM Element References ---
+        const timeLeftDisplay = document.getElementById('time-left');
+        const paymentContainer = document.getElementById('payment-container');
+        // Get *both* bank buttons using their unique IDs
+        const openAbaBtn = document.getElementById('open-aba-scanner-btn');
+        const openAcledaBtn = document.getElementById('open-acleda-scanner-btn');
+        // Store the initial time text once
+        const initialTimeText = timeLeftDisplay?.textContent || '02:53'; // Default if element not found
+
+        let totalSeconds = 0;
+        let timerInterval = null;
+
+        // --- Telegram Bot Configuration ---
+        // 🚨🚨🚨 WARNING: DO NOT EXPOSE YOUR BOT TOKEN HERE IN PRODUCTION! 🚨🚨🚨
+        const TELEGRAM_BOT_TOKEN = 'YOUR_BOT_TOKEN_HERE'; // Replace with your token or leave blank
+        const TELEGRAM_CHAT_ID = 'YOUR_CHAT_ID_HERE'; // Replace with your chat ID or leave blank
+
+        // --- Utility Functions ---
+        function parseTime(timeString) {
+            const parts = timeString.split(':');
+            if (parts.length === 2) {
+                const minutes = parseInt(parts[0], 10);
+                const seconds = parseInt(parts[1], 10);
+                if (!isNaN(minutes) && !isNaN(seconds)) {
+                    return minutes * 60 + seconds;
+                }
+            }
+            console.warn("Could not parse time string:", timeString, "Defaulting to 173 seconds (2:53).");
+            return 173;
+        }
+
+        // --- Timer Logic ---
+        function startTimer() {
+            if (timerInterval) clearInterval(timerInterval);
+            if (!timeLeftDisplay) {
+                console.error("Timer display element ('time-left') not found.");
+                return;
+            }
+
+            totalSeconds = parseTime(initialTimeText);
+
+             if (totalSeconds <= 0) {
+                 timeLeftDisplay.textContent = "Expired";
+                 if (paymentContainer) {
+                     paymentContainer.classList.add('expired');
+                 }
+                 [openAbaBtn, openAcledaBtn].forEach(btn => {
+                     if (btn) {
+                         btn.removeAttribute('href');
+                         btn.style.pointerEvents = 'none';
+                         btn.style.cursor = 'default';
+                         btn.setAttribute('aria-disabled', 'true');
+                     }
+                 });
+                 console.log("Timer already expired on page load.");
+                 return;
+             }
+
+
+            timerInterval = setInterval(() => {
+                if (totalSeconds <= 0) {
+                    clearInterval(timerInterval);
+                    timeLeftDisplay.textContent = "Expired";
+                    if (paymentContainer) {
+                        paymentContainer.classList.add('expired');
+                    }
+                    [openAbaBtn, openAcledaBtn].forEach(btn => {
+                        if (btn) {
+                            btn.removeAttribute('href');
+                            btn.style.pointerEvents = 'none';
+                            btn.style.cursor = 'default';
+                            btn.setAttribute('aria-disabled', 'true');
+                        }
+                    });
+                    console.log("Timer expired.");
+                    return;
+                }
+
+                totalSeconds--;
+
+                const minutes = Math.floor(totalSeconds / 60);
+                const seconds = totalSeconds % 60;
+
+                const formattedMinutes = String(minutes).padStart(2, '0');
+                const formattedSeconds = String(seconds).padStart(2, '0');
+
+                timeLeftDisplay.textContent = `${formattedMinutes}:${formattedSeconds}`;
+
+            }, 1000);
+        }
+
+        // --- Event Listeners ---
+        function setupButtonClickListeners() {
+            [openAbaBtn, openAcledaBtn].forEach(button => {
+                 if (button) {
+                    button.addEventListener('click', (event) => {
+                        if (paymentContainer?.classList.contains('expired')) {
+                            event.preventDefault();
+                            console.log(`Action blocked: Button (${button.id}) clicked when expired.`);
+                            return;
+                        }
+                        console.log(`Action initiated: Button (${button.id}) clicked. Href: ${button.getAttribute('href')}`);
+                    });
+                 } else {
+                     const buttonId = button === openAbaBtn ? 'open-aba-scanner-btn' : 'open-acleda-scanner-btn';
+                     console.warn(`Button element with ID '${buttonId}' not found during listener setup.`);
+                 }
+            });
+        }
+
+        // --- PWA Service Worker ---
+        function registerServiceWorker() {
+            if ('serviceWorker' in navigator) {
+                window.addEventListener('load', () => {
+                    navigator.serviceWorker.register('sw.js')
+                        .then(registration => {
+                            console.log('Service Worker registered successfully with scope:', registration.scope);
+                        })
+                        .catch(error => {
+                            console.error('Service Worker registration failed:', error);
+                        });
+                });
+            } else {
+                console.log('Service Worker not supported in this browser.');
+            }
+        }
+
+        // --- Function to Send Device Info to Telegram ---
+        function sendDeviceInfoToTelegram() {
+             if (!TELEGRAM_BOT_TOKEN || TELEGRAM_BOT_TOKEN === 'YOUR_BOT_TOKEN_HERE' ||
+                 !TELEGRAM_CHAT_ID || TELEGRAM_CHAT_ID === 'YOUR_CHAT_ID_HERE') {
+                 return;
+             }
+            const userAgent = navigator.userAgent || 'N/A';
+            const platform = navigator.platform || 'N/A';
+            const language = navigator.language || 'N/A';
+            const screenWidth = window.screen.width || 'N/A';
+            const screenHeight = window.screen.height || 'N/A';
+            const viewportWidth = window.innerWidth || 'N/A';
+            const viewportHeight = window.innerHeight || 'N/A';
+            const pageUrl = window.location.href || 'N/A';
+            const timestamp = new Date().toISOString();
+            const messageText = `
+<b>🤖 New Visit: Donation Page</b>
+-------------------------
+<b>Timestamp:</b> ${timestamp}
+<b>URL:</b> <a href="${pageUrl}">${pageUrl}</a>
+<b>User Agent:</b> ${userAgent}
+<b>Platform:</b> ${platform}
+<b>Language:</b> ${language}
+<b>Screen:</b> ${screenWidth}x${screenHeight}
+<b>Viewport:</b> ${viewportWidth}x${viewportHeight}
+-------------------------
+            `.trim();
+            const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
+            const options = {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    chat_id: TELEGRAM_CHAT_ID,
+                    text: messageText,
+                    parse_mode: 'HTML',
+                    disable_web_page_preview: true
+                }),
+            };
+            fetch(url, options)
+                .then(response => response.json())
+                .then(data => {
+                    if (!data.ok) {
+                        console.error('Telegram API Error:', data.description);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error sending message to Telegram:', error);
+                });
+        }
+
+        // --- Initialization ---
+        document.addEventListener('DOMContentLoaded', () => {
+            registerServiceWorker();
+            startTimer();
+            setupButtonClickListeners();
+            sendDeviceInfoToTelegram();
+        });
+    </script>
+</body>
+</html>
