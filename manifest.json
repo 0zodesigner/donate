@@ -2,7 +2,7 @@
   "name": "ABA KHQR Donation Ozo",
   "short_name": "Ozo Donate",
   "description": "Scan ABA KHQR to make a donation.",
-  "start_url": "https://heng-zm.github.io/donate/", // Start in the same directory as the manifest
+  "start_url": "https://0zodesigner.github.io/donate/", // Start in the same directory as the manifest
   "display": "standalone", // Opens like a native app
   "background_color": "#ffffff", // Splash screen background
   "theme_color": "#015f7b", // Browser UI color (matches header)
