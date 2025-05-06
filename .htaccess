@@ -1,0 +1,32 @@
+server {
+    # ... other server config ...
+
+    # Cache static assets like CSS, JS, images, etc.
+    location ~* \.(css|js|jpg|jpeg|png|gif|ico|webp|avif|svg)$ {
+        expires 1M; # Cache for 1 month
+        add_header Cache-Control "public";
+        access_log off; # Optional: Don't log access for static files
+    }
+
+    # Cache manifest file (might change more often than images)
+    location ~* \.json$ {
+        expires 1w; # Cache for 1 week
+        add_header Cache-Control "public";
+        access_log off;
+    }
+
+    # Optional: Enable Gzip compression
+    gzip on;
+    gzip_vary on;
+    gzip_min_length 1024;
+    gzip_proxied expired no-cache no-store private auth;
+    gzip_types text/plain text/css text/xml text/javascript application/x-javascript application/xml application/javascript application/json;
+
+    # ... other location blocks for your main app/html ...
+    location / {
+        # For HTML, often better to use ETag validation or shorter cache
+        expires 1d; # Cache HTML for 1 day (adjust as needed)
+        add_header Cache-Control "public";
+        # ... try_files, proxy_pass, etc. ...
+    }
+}
