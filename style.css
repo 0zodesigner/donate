@@ -247,8 +247,8 @@
          #open-acleda-scanner-btn {
              background-color: #003c71; border-color: #003c71;
         }
-        #open-acleda-scanner-btn:hover { background-color: #C40000; }
-        #open-acleda-scanner-btn:active { background-color: #8C0000; }
+        #open-acleda-scanner-btn:hover { background-color: #005099; }
+        #open-acleda-scanner-btn:active { background-color: #002b50; }
         #open-acleda-scanner-btn:focus-visible { border-color: #C40000; box-shadow: 0 0 0 2px rgba(174, 0, 0, 0.3); }
 
         /* Thank You Text */
