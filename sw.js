@@ -1,43 +1,93 @@
-// sw.js - Basic Service Worker for PWA installation prompt
+// sw.js
 
-const VERSION = 'v1'; // Simple versioning for potential cache updates later
+const CACHE_NAME = 'donation-page-cache-v1'; // Change version to force update
+const urlsToCache = [
+    '/', // Cache the root/index page if this IS the index page
+    'index.html', // Or whatever your HTML file is named
+    'style.css',
+    'script.js',
+    'manifest.json',
+    // Add essential images that should always be available
+    'icon-01.png',
+    '192.png',
+    'qr.PNG',
+    'aba.PNG',
+    'acleda.PNG',
+    'telegram.png',
+    'Thank.gif' // Consider optimizing/replacing this GIF!
+    // Add other essential icons/images if any
+];
 
-/**
- * Installation Phase
- * Fired when the service worker is first installed or updated.
- */
-self.addEventListener('install', (event) => {
-  console.log(`Service Worker (${VERSION}): Installing...`);
-  // Force the waiting service worker to become the active service worker.
-  // This helps updates apply faster, especially when paired with clients.claim().
-  self.skipWaiting();
-  // Note: No caching is done here in this basic setup.
+// --- Installation: Cache core assets ---
+self.addEventListener('install', event => {
+    console.log('[SW] Install event');
+    // Perform install steps
+    event.waitUntil(
+        caches.open(CACHE_NAME)
+            .then(cache => {
+                console.log('[SW] Opened cache:', CACHE_NAME);
+                return cache.addAll(urlsToCache);
+            })
+            .then(() => {
+                console.log('[SW] Core assets cached successfully');
+                return self.skipWaiting(); // Activate SW immediately
+            })
+            .catch(error => {
+                console.error('[SW] Failed to cache core assets:', error);
+            })
+    );
 });
 
-/**
- * Activation Phase
- * Fired after installation and when the service worker takes control.
- */
-self.addEventListener('activate', (event) => {
-  console.log(`Service Worker (${VERSION}): Activating...`);
-  // Take control of all open clients (tabs/windows) immediately.
-  // Necessary for the effects of skipWaiting() to be seen by existing pages
-  // without requiring a reload.
-  event.waitUntil(self.clients.claim());
-  // Note: No cache cleanup is done here in this basic setup.
+// --- Activation: Clean up old caches ---
+self.addEventListener('activate', event => {
+    console.log('[SW] Activate event');
+    event.waitUntil(
+        caches.keys().then(cacheNames => {
+            return Promise.all(
+                cacheNames.map(cacheName => {
+                    if (cacheName !== CACHE_NAME) {
+                        console.log('[SW] Deleting old cache:', cacheName);
+                        return caches.delete(cacheName);
+                    }
+                })
+            );
+        }).then(() => {
+            console.log('[SW] Claiming clients');
+            return self.clients.claim(); // Take control of open pages
+        })
+    );
 });
 
-/**
- * Fetch Phase
- * Fired for every network request made by pages controlled by the service worker.
- * This basic version simply acts as a pass-through.
- */
-self.addEventListener('fetch', (event) => {
-  // Optional: Log the fetch request for debugging
-  // console.log(`Service Worker (${VERSION}): Fetching `, event.request.url);
+// --- Fetch: Serve from Cache first, then Network ---
+self.addEventListener('fetch', event => {
+    // console.log('[SW] Fetch event for:', event.request.url);
+    event.respondWith(
+        caches.match(event.request)
+            .then(response => {
+                // Cache hit - return response
+                if (response) {
+                    // console.log('[SW] Serving from cache:', event.request.url);
+                    return response;
+                }
 
-  // Basic network pass-through strategy.
-  // The browser will handle the request as if the service worker wasn't there.
-  // If the network fails, the request will fail (no offline fallback).
-  event.respondWith(fetch(event.request));
+                // Not in cache - fetch from network
+                // console.log('[SW] Fetching from network:', event.request.url);
+                return fetch(event.request).then(
+                    networkResponse => {
+                        // Optional: Cache the new response dynamically?
+                        // Be careful with this for non-static assets or API calls
+                        // if (networkResponse && networkResponse.status === 200 && event.request.method === 'GET') {
+                        //     caches.open(CACHE_NAME).then(cache => {
+                        //         cache.put(event.request, networkResponse.clone());
+                        //     });
+                        // }
+                        return networkResponse;
+                    }
+                ).catch(error => {
+                     console.error('[SW] Fetch failed for:', event.request.url, error);
+                     // Optional: Return a fallback offline page if fetch fails
+                     // return caches.match('/offline.html');
+                });
+            })
+    );
 });
