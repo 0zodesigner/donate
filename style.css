@@ -203,7 +203,7 @@
              justify-content: flex-start;
              text-decoration: none; font-size: 20px; font-weight: bold;
              color: white; cursor: pointer;
-             border: 1px solid transparent; border-radius: 5px;
+             border: 1px solid transparent; border-radius: 45px;
              transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out, transform 0.15s ease-in-out, border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out, opacity 0.2s ease-in-out;
              outline: none; margin-bottom: 15px;
              width: 90%; max-width: 250px;
@@ -245,7 +245,7 @@
         #open-aba-scanner-btn:focus-visible { border-color: #005099; box-shadow: 0 0 0 2px rgba(0, 60, 113, 0.3); }
 
          #open-acleda-scanner-btn {
-             background-color: #AE0000; border-color: #AE0000;
+             background-color: #003c71; border-color: #003c71;
         }
         #open-acleda-scanner-btn:hover { background-color: #C40000; }
         #open-acleda-scanner-btn:active { background-color: #8C0000; }
