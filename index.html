@@ -5,7 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Donation</title>
     <meta name="theme-color" content="#e10a17"/>
-    <link rel="stylesheet" href="style.css">
+    <!-- Basic CSP, can be stricter if JS/CSS are externalized -->
+    <meta http-equiv="Content-Security-Policy"
+          content="default-src 'self';
+                   script-src 'self' 'unsafe-inline' https://api.telegram.org;
+                   style-src 'self' 'unsafe-inline';
+                   img-src 'self' data:;
+                   font-src 'self';
+                   connect-src 'self' https://api.telegram.org;
+                   manifest-src 'self';
+                   object-src 'none';
+                   base-uri 'self';
+                   form-action 'self';">
     <link rel="icon" type="image/x-icon" href="icon-01.png">
     <link rel="manifest" href="manifest.json">
     <link rel="apple-touch-icon" href="192.png">
@@ -18,81 +29,86 @@
              <span class="header-brand">OZO. DESIGNER </span>
              <span class="header-khqr-logo">KHQR</span>
         </header>
-
-        <!-- Main Content -->
-        <main class="content">
-            <!-- Top Bar -->
-            <div class="top-bar">
-                <span class="title">PAY ME A COFFEE</span>
-                <div class="timer">
-                    <span class="timer-icon"></span>
-                    <!-- Set your desired initial time here -->
-                    <span id="time-left">10:53</span>
-                </div>
+    <!-- Main Content -->
+    <main class="content">
+        <!-- Top Bar -->
+        <div class="top-bar">
+            <span class="title">PAY ME A COFFEE</span>
+            <div class="timer">
+                <span class="timer-icon"></span>
+                <span id="time-left" aria-live="polite" aria-atomic="true">10:53</span>
             </div>
+        </div>
 
-            <!-- Recipient Info -->
-            <div class="recipient-info">
-                <div class="recipient-name">Ozo. Designer</div>
+        <!-- Recipient Info -->
+        <div class="recipient-info">
+            <div class="recipient-name">Ozo. Designer</div>
+        </div>
+
+        <!-- Separator -->
+        <hr class="separator">
+
+        <!-- QR Code Container -->
+        <div class="qr-code-container" title="Scan QR Code">
+            <img src="qr.PNG"
+                 alt="ABA KHQR Code for Donation to Ozo. Designer"
+                 class="qr-code-img"
+                 id="qr-code">
+             <div class="qr-overlay">
+                <span>$</span>
             </div>
+        </div>
 
-            <!-- Separator -->
-            <hr class="separator">
+        <!-- Instructions -->
+        <div class="instructions">
+            <div class="scan-text">SCAN TO PAY</div>
+            <div class="or-text">OR</div>
+        </div>
 
-            <!-- QR Code Container -->
-            <div class="qr-code-container" title="Scan QR Code">
-                <img src="qr.PNG"
-                     alt="ABA KHQR Code for Donation to Ozo. Designer"
-                     class="qr-code-img"
-                     id="qr-code">
-                 <div class="qr-overlay">
-                    <span>$</span>
-                </div>
+        <!-- Open ABA Scanner Button -->
+        <a id="open-aba-scanner-btn" class="bank-scanner-link" href="https://pay.ababank.com/j87hqyxC5ntRmRjX9" aria-label="Pay with ABA Bank">
+            <img class="bank-icon" src="aba.PNG" alt="ABA Bank Icon">
+            <span>ABA PAY</span>
+        </a>
+        <!-- Open ACLEDA Scanner Button -->
+        <a id="open-acleda-scanner-btn" class="bank-scanner-link" href="https://acledabank.com.kh/acleda?payment_data=qWY5B2SAUfIhLblxzOtfu8yRyA1YGYQ90srEOvcavYJBT7ptJoQ/SGg9AR8Hv+vUYIjrjjopbU7ERsCGlpvj6bCqNPJOyIHFHNGFU8S/FiKNZ/wUzgY/wXVrAwGg1Ve3NdijLbmZA4ujtJesRuDN4xqoQtXSG9ruibRasZJSia+nqp6Jq+dOHdihQ/YCiNjPygjAtil95ToBA/Vs1BQCSdzxz6xt9nQKvQuOWQMTnpKyfhw/yATbmMDSFaUEynvlO&key=khqr" aria-label="Pay with ACLEDA Bank">
+            <img class="bank-icon" src="acleda.PNG" alt="ACLEDA Bank Icon">
+            <span>ACLEDA PAY</span>
+        </a>
+
+        <!-- Thank You GIF Container -->
+        <div id="thank-you-gif-container">
+            <img id="thank-you-gif" src="Thank.gif" alt="Animated thank you message with celebratory graphics.">
+             <div class="amount">
+                    THANK FOR DONATION<span class="currency"></span>
             </div>
+        </div>
 
-            <!-- Instructions -->
-            <div class="instructions">
-                <div class="scan-text">SCAN TO PAY</div>
-                <div class="or-text">OR</div>
-            </div>
+        <!-- Footer Text (Signature) -->
+        <p class="footer-text">
+            by Ozo. Designer
+        </p>
 
-            <!-- Open ABA Scanner Button -->
-            <a id="open-aba-scanner-btn" class="bank-scanner-link" href="https://pay.ababank.com/j87hqyxC5ntRmRjX9">
-                <img class="bank-icon" src="aba.PNG" alt="ABA Bank Icon">
-                <span>ABA PAY</span>
-            </a>
-            <!-- Open ACLEDA Scanner Button -->
-            <a id="open-acleda-scanner-btn" class="bank-scanner-link" href="https://acledabank.com.kh/acleda?payment_data=qWY5B2SAUfIhLblxzOtfu8yRyA1YGYQ90srEOvcavYJBT7ptJoQ/SGg9AR8Hv+vUYIjrjjopbU7ERsCGlpvj6bCqNPJOyIHFHNGFU8S/FiKNZ/wUzgY/wXVrAwG1Ve7NdijLbmZA4ujdJesRuDN4xqoQtXSG9ruibRasZJSia+nqp6Jq+dOHdihQ/YCiNjPygjAtil95ToBA/Vs1BQCSdzxz6xt9nQKvQuOWQMTnpKyfhw/yATbmMDSFaUEynvlO&key=khqr">
-                <img class="bank-icon" src="acleda.PNG" alt="ACLEDA Bank Icon">
-                <span>ACLEDA PAY</span>
-            </a>
+    </main> <!-- End of main content -->
 
-            <!-- Thank You GIF Container (Visible by default) -->
-            <div id="thank-you-gif-container">
-                <img id="thank-you-gif" src="Thank.gif" alt="Thank You!">
-                 <div class="amount">
-                        THANK FOR DONATION<span class="currency"></span>
-                </div>
-            </div>
+    <!-- Donation List Section -->
+    <section id="supporter-list-section" class="donations-list-section">
+        <h3 class="donations-list-title">SUPPORTERS</h3> <!-- UPDATED TEXT -->
+        <!-- Supporter count <p> element REMOVED -->
+        <ul id="donors-list" class="donors-list">
+            <!-- Dynamically populated -->
+        </ul>
+        <p id="no-donations-message" class="no-donations-message">Loading supporters...</p>
+    </section>
 
-            <!-- Footer Text -->
-            <p class="footer-text">
-                by Ozo. Designer
-            </p>
+    <!-- Footer with Social Icon -->
+    <footer class="footer-social">
+        <a href="https://t.me/m11mmm112" target="_blank" rel="noopener noreferrer" class="telegram-link" aria-label="Join Ozo. Designer's Telegram channel">
+            <img src="telegram.png" alt="Telegram Icon">
+            <span>Join on Telegram</span>
+        </a>
+    </footer>
 
-        </main> <!-- End of main content -->
-
-        <!-- Footer with Social Icon -->
-        <footer class="footer-social">
-            <a href="https://t.me/m11mmm112" target="_blank" rel="noopener noreferrer" class="telegram-link" aria-label="Contact us on Telegram">
-                <img src="telegram.png" alt="Telegram Icon">
-                <span>Join on Telegram</span>
-            </a>
-        </footer>
-
-    </div> <!-- End of container -->
-
-    <script src="script.js" defer></script>
- </body>
+</div> <!-- End of container -->
+</body>
 </html>
-
