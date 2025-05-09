@@ -1,4 +1,28 @@
-<div class="container" id="payment-container">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Donation</title>
+    <meta name="theme-color" content="#e10a17"/>
+    <!-- Basic CSP, can be stricter if JS/CSS are externalized -->
+    <meta http-equiv="Content-Security-Policy"
+          content="default-src 'self';
+                   script-src 'self' 'unsafe-inline' https://api.telegram.org;
+                   style-src 'self' 'unsafe-inline';
+                   img-src 'self' data:;
+                   font-src 'self';
+                   connect-src 'self' https://api.telegram.org;
+                   manifest-src 'self';
+                   object-src 'none';
+                   base-uri 'self';
+                   form-action 'self';">
+    <link rel="icon" type="image/x-icon" href="icon-01.png">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="192.png">
+</head>
+<body>
+    <div class="container" id="payment-container">
         <!-- Header -->
         <header class="header">
              <span class="header-brand">OZO. DESIGNER </span>
@@ -81,10 +105,12 @@
             <img src="telegram.png" alt="Telegram Icon">
             <span>Join on Telegram</span>
         </a>
-        <a href="https://www.behance.net/anhheng" target="_blank" rel="noopener noreferrer" class="social-link behance-link" aria-label="View Ozo. Designer's Behance Profile">
+        <a href="https://www.behance.net/YOUR_PROFILE_NAME" target="_blank" rel="noopener noreferrer" class="social-link behance-link" aria-label="View Ozo. Designer's Behance Profile">
             <img src="behance.png" alt="Behance Icon"> <!-- Make sure you have behance.png in your project -->
             <span>View on Behance</span>
         </a>
     </footer>
 
 </div> <!-- End of container -->
+</body>
+</html>
