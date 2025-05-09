@@ -18,79 +18,79 @@
             --text-muted: #777777;
             --text-very-muted: #888888;
             --text-heading-blue: #003366; /* For 'THANK FOR DONATION' */
-            --text-success: #007700; /* Original green for donation amounts */
-            --text-black: #000000; /* For QR overlay $ and new title color */
-            --text-popup-amount: var(--text-dark); /* Or var(--text-success) for green in popup */
+            --text-success: #007700;
+            --text-black: #000000;
+            --text-popup-amount: var(--text-dark);
 
 
             --bg-page: #f0f2f5;
             --bg-container: #ffffff;
-            --bg-alt-section: #f8f9fa; /* Donations list, footer social */
-            --bg-hover-light: #f1f1f1; /* Donor item hover */
+            --bg-alt-section: #f8f9fa;
+            --bg-hover-light: #f1f1f1;
 
             --border-color-main: #dddddd;
             --border-color-light: #eeeeee;
             --border-color-qr: #eeeeee;
-            --border-color-icon-overlay: #f0f0f0; /* QR overlay border */
+            --border-color-icon-overlay: #f0f0f0;
             --border-color-disabled: #cccccc;
-            --border-color-title-underline: #b9b9b9; /* New title underline color */
-
+            --border-color-title-underline: #b9b9b9;
 
             --disabled-bg-color: #cccccc;
             --disabled-text-color: #888888;
 
             --shadow-main: 0 4px 12px rgba(0, 0, 0, 0.1);
             --shadow-hover: 0 8px 20px rgba(0, 0, 0, 0.12);
-            --shadow-focus: 0 0 0 2px; /* Base for focus rings, color added per element */
+            --shadow-focus: 0 0 0 2px;
             --shadow-qr-img: 0 2px 4px rgba(0,0,0,0.05);
             --shadow-qr-overlay: 0 0 5px rgba(0,0,0,0.2);
-            --shadow-popup: 0 4px 10px rgba(0, 0, 0, 0.15); /* For new popup style */
+            --shadow-popup: 0 4px 10px rgba(0, 0, 0, 0.15);
 
             --border-radius-container: 8px;
             --border-radius-button: 45px;
             --border-radius-qr: 10px;
-            --border-radius-tooltip: 6px; /* Updated for new popup */
+            --border-radius-tooltip: 6px;
             --border-radius-scrollbar: 4px;
+            --border-radius-social-link: 5px; /* For social links */
+
 
             --font-family-main: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             --transition-duration-fast: 0.15s;
             --transition-duration-normal: 0.2s;
             --transition-duration-page-load: 0.5s;
+
+            /* Social Link Specific Colors */
+            --behance-color: #1769ff;
+            --behance-color-hover: #0052cc;
+            --behance-bg-hover: #e8f0ff;
+            --behance-bg-active: #d1e0ff;
+            --behance-focus-shadow: rgba(23, 105, 255, 0.25);
+
+            --telegram-color: #0088cc;
+            --telegram-color-hover: #0077b3;
+            --telegram-bg-hover: #e9f5ff;
+            --telegram-bg-active: #d5effc;
+            --telegram-focus-shadow: rgba(0, 136, 204, 0.25);
         }
 
         /* Basic Reset & Body Styles */
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
         html { /* No smooth scroll needed */ }
-
         body {
-            font-family: var(--font-family-main);
-            background-color: var(--bg-page);
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            min-height: 100vh;
-            padding-top: 20px;
-            padding-bottom: 40px;
+            font-family: var(--font-family-main); background-color: var(--bg-page); display: flex;
+            justify-content: center; align-items: flex-start; min-height: 100vh;
+            padding-top: 20px; padding-bottom: 40px;
         }
 
-        /* --- Animation Definitions --- */
+        /* Animation Definitions */
         @keyframes fadeSlideUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes fadeScaleIn { from { opacity: 0; transform: scale(0.8); } to { opacity: 1; transform: scale(1); } }
         @keyframes pulse { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.3); opacity: 0.7; } }
         @keyframes scaleIn { from { transform: translate(-50%, -50%) scale(0); opacity: 0; } to { transform: translate(-50%, -50%) scale(1); opacity: 1; } }
 
         /* Main Container */
         .container {
-            background-color: var(--bg-container);
-            width: 100%; max-width: 400px;
-            border-radius: var(--border-radius-container);
-            box-shadow: var(--shadow-main);
-            overflow: hidden; display: flex; flex-direction: column;
-            margin-left: auto; margin-right: auto;
+            background-color: var(--bg-container); width: 100%; max-width: 400px;
+            border-radius: var(--border-radius-container); box-shadow: var(--shadow-main);
+            overflow: hidden; display: flex; flex-direction: column; margin-left: auto; margin-right: auto;
         }
 
         /* Initial Hidden State for Animated Elements */
@@ -114,17 +114,14 @@
         /* Header Section */
         .header {
             background-color: var(--primary-color); color: var(--text-light); padding: 15px 20px;
-            display: flex; justify-content: space-between; align-items: center;
-            min-height: 55px; flex-shrink: 0;
+            display: flex; justify-content: space-between; align-items: center; min-height: 55px; flex-shrink: 0;
         }
         .header-brand { font-size: 0.9em; opacity: 0.9; font-weight: bold; text-shadow: 1px 1px 2px rgba(0,0,0,0.2); align-self: center; }
         .header-khqr-logo {
-            font-weight: bold; font-size: 1.4em; position: relative;
-            padding-right: 18px; line-height: 1; display: flex; align-items: center;
+            font-weight: bold; font-size: 1.4em; position: relative; padding-right: 18px; line-height: 1; display: flex; align-items: center;
         }
         .header-khqr-logo::before, .header-khqr-logo::after {
-            content: ''; position: absolute; right: 0; height: 2px;
-            background-color: var(--text-light); width: 12px;
+            content: ''; position: absolute; right: 0; height: 2px; background-color: var(--text-light); width: 12px;
         }
         .header-khqr-logo::before { transform: translateY(-4px); }
         .header-khqr-logo::after { transform: translateY(4px); }
@@ -136,20 +133,14 @@
         .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
         .title { font-weight: bold; font-size: 1.4em; color: var(--text-dark); text-align: left; }
         .timer { display: flex; align-items: center; font-size: 1em; font-weight: 500; color: var(--text-medium); transition: color 0.3s ease; }
-        #time-left:focus-visible { /* Style for focused timer when expired */
-            outline: 2px solid var(--primary-color-focus-shadow);
-            outline-offset: 2px;
-            border-radius: 3px;
-        }
+        #time-left:focus-visible { outline: 2px solid var(--primary-color-focus-shadow); outline-offset: 2px; border-radius: 3px; }
         .timer-icon {
-            width: 20px; height: 20px; border: 3px solid var(--accent-color); border-radius: 50%;
-            margin-right: 8px; position: relative; display: flex; justify-content: center;
-            align-items: center; transition: border-color 0.3s ease;
+            width: 20px; height: 20px; border: 3px solid var(--accent-color); border-radius: 50%; margin-right: 8px;
+            position: relative; display: flex; justify-content: center; align-items: center; transition: border-color 0.3s ease;
         }
         .timer-icon::before {
-            content: ''; display: block; width: 8px; height: 8px; background-color: var(--accent-color);
-            border-radius: 50%; transition: background-color 0.3s ease;
-            animation: pulse 2s infinite ease-in-out;
+            content: ''; display: block; width: 8px; height: 8px; background-color: var(--accent-color); border-radius: 50%;
+            transition: background-color 0.3s ease; animation: pulse 2s infinite ease-in-out;
         }
         .expired .timer-icon::before { animation: none; background-color: var(--primary-color); }
 
@@ -171,11 +162,10 @@
         .container.expired .qr-code-container:hover .qr-code-img { transform: none; box-shadow: none; }
         .qr-overlay {
              position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-             background-color: var(--bg-container); border-radius: 50%; width: 30px; height: 30px;
-             display: flex; justify-content: center; align-items: center;
-             box-shadow: var(--shadow-qr-overlay); border: 3px solid var(--border-color-icon-overlay);
-             transition: opacity 0.3s ease; pointer-events: none; opacity: 0;
-             animation: scaleIn 0.4s 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+             background-color: var(--bg-container); border-radius: 50%; width: 30px; height: 30px; display: flex;
+             justify-content: center; align-items: center; box-shadow: var(--shadow-qr-overlay);
+             border: 3px solid var(--border-color-icon-overlay); transition: opacity 0.3s ease;
+             pointer-events: none; opacity: 0; animation: scaleIn 0.4s 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
         }
         .qr-overlay span { font-size: 14px; font-weight: bold; color: var(--text-black); }
 
@@ -186,21 +176,17 @@
 
         /* Button Styles */
         .bank-scanner-link {
-             display: inline-flex; align-items: center; justify-content: flex-start; text-decoration: none;
-             font-size: 20px; font-weight: bold; color: var(--text-light); cursor: pointer;
-             border: 1px solid transparent; border-radius: var(--border-radius-button);
+             display: inline-flex; align-items: center; justify-content: flex-start; text-decoration: none; font-size: 20px;
+             font-weight: bold; color: var(--text-light); cursor: pointer; border: 1px solid transparent;
+             border-radius: var(--border-radius-button);
              transition: background-color var(--transition-duration-normal) ease-in-out, color var(--transition-duration-normal) ease-in-out, transform var(--transition-duration-fast) ease-in-out, border-color var(--transition-duration-normal) ease-in-out, box-shadow var(--transition-duration-normal) ease-in-out, opacity var(--transition-duration-normal) ease-in-out;
-             outline: none; margin-bottom: 15px; width: 90%; max-width: 250px;
-             padding: 8px 18px; margin-left: auto; margin-right: auto;
-             overflow: hidden; min-height: 50px;
+             outline: none; margin-bottom: 15px; width: 90%; max-width: 250px; padding: 8px 18px;
+             margin-left: auto; margin-right: auto; overflow: hidden; min-height: 50px;
         }
         .bank-scanner-link:focus-visible { box-shadow: var(--shadow-focus) /* color set by specific button */; }
         .bank-scanner-link:hover { transform: translateY(-2px); }
         .bank-scanner-link:active { transform: translateY(1px) scale(0.98); transition-duration: 0.05s; }
-        .bank-scanner-link img.bank-icon {
-            width: 39px; height: 39px; border: solid 3px var(--text-light); border-radius: 30px;
-            background-color: var(--text-light); margin-right: 12px; flex-shrink: 0;
-        }
+        .bank-scanner-link img.bank-icon { width: 39px; height: 39px; border: solid 3px var(--text-light); border-radius: 30px; background-color: var(--text-light); margin-right: 12px; flex-shrink: 0; }
         .bank-scanner-link span { flex-grow: 1; text-align: center; }
         #open-aba-scanner-btn { background-color: var(--secondary-color); border-color: var(--secondary-color); }
         #open-aba-scanner-btn:hover { background-color: var(--secondary-color-hover); }
@@ -213,44 +199,26 @@
 
         /* Thank You Text & GIF */
         .amount {
-            font-size: 1.1em; font-weight: bold; color: var(--text-heading-blue); line-height: 1.3;
-            word-wrap: break-word; margin-top: 15px; margin-bottom: 0; transition: opacity 0.3s ease;
+            font-size: 1.1em; font-weight: bold; color: var(--text-heading-blue); line-height: 1.3; word-wrap: break-word;
+            margin-top: 15px; margin-bottom: 0; transition: opacity 0.3s ease;
         }
-        #thank-you-gif-container {
-            display: block; position: relative; margin-top:10px; margin-bottom: 20px;
-            z-index: 10; pointer-events: none; text-align: center;
-        }
+        #thank-you-gif-container { display: block; position: relative; margin-top:10px; margin-bottom: 20px; z-index: 10; pointer-events: none; text-align: center; }
         #thank-you-gif { max-width: 150px; max-height: 150px; height: auto; border-radius: 5px; display: inline-block; pointer-events: auto; }
 
         /* Footer Text (Signature) */
-        .footer-text {
-            font-size: 0.8em; color: var(--text-very-muted); margin-top: 20px; line-height: 1.4;
-            position: relative; z-index: 5; transition: opacity 0.3s ease;
-            padding: 0 20px; text-align: center; margin-bottom: 30px;
-        }
+        .footer-text { font-size: 0.8em; color: var(--text-very-muted); margin-top: 20px; line-height: 1.4; position: relative; z-index: 5; transition: opacity 0.3s ease; padding: 0 20px; text-align: center; margin-bottom: 30px; }
 
         /* Donation List Section */
         .donations-list-section {
-            margin-top: 0; padding: 20px; border-top: 1px solid var(--border-color-light);
-            background-color: var(--bg-alt-section); text-align: left; position: relative;
-            z-index: 4; opacity: 0; transform: translateY(15px);
+            margin-top: 0; padding: 20px; border-top: 1px solid var(--border-color-light); background-color: var(--bg-alt-section);
+            text-align: left; position: relative; z-index: 4; opacity: 0; transform: translateY(15px);
             transition: opacity 0.1s, transform 0.1s;
         }
-        .donations-list-section.animate-in {
-            animation: fadeSlideUp var(--transition-duration-page-load) ease-out forwards;
-            opacity: 1; transform: translateY(0); transition: none;
-        }
-        /* .supporter-count removed */
-        .donations-list-title { /* UPDATED */
-            font-size: 1.3em;
-            font-weight: bold;
-            color: var(--text-black); /* Changed to black */
-            margin: 0 auto 10px auto; /* Keeps it centered if it's an inline-block or block with auto margins */
-            padding-bottom: 8px;
-            border-bottom: 2px solid var(--border-color-title-underline); /* Changed border */
-            width: auto;
-            max-width: calc(100% - 20px);
-            text-align: center; /* Ensures text inside is centered */
+        .donations-list-section.animate-in { animation: fadeSlideUp var(--transition-duration-page-load) ease-out forwards; opacity: 1; transform: translateY(0); transition: none; }
+        .donations-list-title {
+            font-size: 1.3em; font-weight: bold; color: var(--text-black); margin: 0 auto 10px auto; padding-bottom: 8px;
+            border-bottom: 2px solid var(--border-color-title-underline); display: inline-block; width: auto;
+            max-width: calc(100% - 20px); text-align: center;
         }
         .donors-list {
             list-style: none; padding: 0; margin: 0; max-height: 200px; overflow-y: auto;
@@ -261,75 +229,76 @@
         .donors-list::-webkit-scrollbar-track { background: var(--bg-page); }
 
         .donor-item {
-            display: flex; align-items: center; justify-content: space-between;
-            padding: 10px 0; border-bottom: 1px dashed var(--border-color-light);
-            font-size: 0.9em; color: var(--text-medium);
+            display: flex; align-items: center; justify-content: space-between; padding: 10px 0;
+            border-bottom: 1px dashed var(--border-color-light); font-size: 0.9em; color: var(--text-medium);
             transition: background-color var(--transition-duration-normal) ease; cursor: default;
         }
         .donor-item:last-child { border-bottom: none; }
         .donor-item:hover:not(.expired .donor-item) { background-color: var(--bg-hover-light); }
         .donor-item-number { font-size: 0.8em; color: var(--text-very-muted); margin-right: 8px; flex-shrink: 0; min-width: 20px; text-align: right; }
         .donor-name {
-            font-weight: 500; flex-grow: 1; margin-right: 10px; word-break: break-word;
-            position: relative; outline: none;
+            font-weight: 500; flex-grow: 1; margin-right: 10px; word-break: break-word; position: relative; outline: none;
         }
         .donor-name[tabindex="0"] { cursor: help; }
         .donor-name[tabindex="0"]:focus-visible { box-shadow: 0 0 0 2px var(--primary-color-focus-shadow); border-radius: 3px; }
-        .donation-amount { /* UPDATED */
-            font-weight: bold;
-            color: var(--text-dark); /* Changed from var(--text-success) */
-            flex-shrink: 0;
-        }
+        .donation-amount { font-weight: bold; color: var(--text-dark); flex-shrink: 0; }
 
-        /* --- Supporter Info Popup (Tooltip) --- */
+        /* Supporter Info Popup (Tooltip) */
         .supporter-popup {
-            position: absolute; bottom: 100%; left: 50%;
-            transform: translate(-50%, -5px);
-            background-color: var(--bg-container); color: var(--text-dark);
-            padding: 10px 15px; border-radius: var(--border-radius-tooltip);
-            font-size: 0.9em; z-index: 20;
+            position: absolute; bottom: 100%; left: 50%; transform: translate(-50%, -5px);
+            background-color: var(--bg-container); color: var(--text-dark); padding: 10px 15px;
+            border-radius: var(--border-radius-tooltip); font-size: 0.9em; z-index: 20;
             opacity: 0; visibility: hidden;
             transition: opacity var(--transition-duration-normal) ease-out, transform var(--transition-duration-normal) ease-out, visibility var(--transition-duration-normal);
-            pointer-events: none; box-shadow: var(--shadow-popup);
-            display: flex; justify-content: space-between; align-items: center;
-            min-width: 200px; max-width: 300px;
+            pointer-events: none; box-shadow: var(--shadow-popup); display: flex;
+            justify-content: space-between; align-items: center; min-width: 200px; max-width: 300px;
         }
-        .donor-name:hover .supporter-popup, .donor-name:focus .supporter-popup, .donor-name:focus-within .supporter-popup {
-            opacity: 1; visibility: visible; transform: translate(-50%, -10px);
-        }
+        .donor-name:hover .supporter-popup, .donor-name:focus .supporter-popup, .donor-name:focus-within .supporter-popup { opacity: 1; visibility: visible; transform: translate(-50%, -10px); }
         .supporter-popup::after {
-            content: ''; position: absolute; top: 100%; left: 50%; margin-left: -6px;
-            border-width: 6px; border-style: solid; border-color: var(--bg-container) transparent transparent transparent;
+            content: ''; position: absolute; top: 100%; left: 50%; margin-left: -6px; border-width: 6px;
+            border-style: solid; border-color: var(--bg-container) transparent transparent transparent;
         }
         .popup-supporter-name {
-            font-weight: 500; /* Or 'normal' */ color: var(--text-dark); margin-right: 15px;
-            flex-grow: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+            font-weight: 500; color: var(--text-dark); margin-right: 15px; flex-grow: 1;
+            overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
         }
         .popup-supporter-amount { font-weight: bold; color: var(--text-popup-amount); flex-shrink: 0; }
-
-        .no-donations-message {
-            text-align: center; color: var(--text-muted); font-style: italic;
-            margin-top: 20px; font-size: 0.9em; padding: 0 10px;
-        }
+        .no-donations-message { text-align: center; color: var(--text-muted); font-style: italic; margin-top: 20px; font-size: 0.9em; padding: 0 10px; }
 
         /* Footer Social Section */
         .footer-social {
-            background-color: var(--bg-alt-section); padding: 15px 20px; text-align: center;
-            border-top: 1px solid var(--border-color-light); flex-shrink: 0; position: relative; z-index: 5;
+            background-color: var(--bg-alt-section); padding: 15px 20px;
+            text-align: center; /* Helps center inline-flex items if they wrap */
+            border-top: 1px solid var(--border-color-light);
+            flex-shrink: 0; position: relative; z-index: 5;
         }
-        .telegram-link {
-            display: inline-flex; align-items: center; text-decoration: none; color: #0088cc;
-            font-size: 0.9em; font-weight: 500; padding: 8px 12px; border: 1px solid transparent;
-            border-radius: 5px; transition: background-color var(--transition-duration-normal) ease-in-out, color var(--transition-duration-normal) ease-in-out, transform var(--transition-duration-fast) ease-in-out, border-color var(--transition-duration-normal) ease-in-out;
-            outline: none;
+        /* Common style for social links */
+        .social-link {
+            display: inline-flex; align-items: center; text-decoration: none;
+            font-size: 0.9em; font-weight: 500; padding: 8px 12px;
+            border: 1px solid transparent; border-radius: var(--border-radius-social-link);
+            transition: background-color var(--transition-duration-normal) ease-in-out, color var(--transition-duration-normal) ease-in-out, transform var(--transition-duration-fast) ease-in-out, border-color var(--transition-duration-normal) ease-in-out;
+            outline: none; margin: 5px; /* Space around each link */
         }
-        .telegram-link:focus-visible { border-color: #0088cc; box-shadow: var(--shadow-focus) rgba(0, 136, 204, 0.25); }
-        .telegram-link:hover { background-color: #e9f5ff; color: #0077b3; transform: translateY(-2px); }
-        .telegram-link:active { transform: translateY(1px); background-color: #d5effc; transition-duration: 0.05s; }
-        .telegram-link img { width: 22px; height: 22px; margin-right: 8px; vertical-align: middle; transition: transform var(--transition-duration-normal) ease-in-out; }
-        .telegram-link:hover img { transform: scale(1.1) rotate(-5deg); }
+        .social-link:hover { transform: translateY(-2px); }
+        .social-link:active { transform: translateY(1px); transition-duration: 0.05s; }
+        .social-link img { width: 22px; height: 22px; margin-right: 8px; vertical-align: middle; transition: transform var(--transition-duration-normal) ease-in-out; }
+        .social-link:hover img { transform: scale(1.1) rotate(-5deg); }
 
-        /* --- State: Expired --- */
+        /* Telegram Specific */
+        .telegram-link { color: var(--telegram-color); }
+        .telegram-link:focus-visible { border-color: var(--telegram-color); box-shadow: var(--shadow-focus) var(--telegram-focus-shadow); }
+        .telegram-link:hover { background-color: var(--telegram-bg-hover); color: var(--telegram-color-hover); }
+        .telegram-link:active { background-color: var(--telegram-bg-active); }
+
+        /* Behance Specific */
+        .behance-link { color: var(--behance-color); }
+        .behance-link:focus-visible { border-color: var(--behance-color); box-shadow: var(--shadow-focus) var(--behance-focus-shadow); }
+        .behance-link:hover { background-color: var(--behance-bg-hover); color: var(--behance-color-hover); }
+        .behance-link:active { background-color: var(--behance-bg-active); }
+
+
+        /* State: Expired */
         .expired .qr-code-img { filter: grayscale(80%); }
         .expired .qr-code-container { cursor: default; }
         .expired .bank-scanner-link {
@@ -337,48 +306,26 @@
             background-color: var(--disabled-bg-color) !important; color: var(--disabled-text-color) !important;
             border-color: var(--disabled-bg-color) !important; outline: none !important;
         }
-        .expired .donations-list-section {
-            animation: none !important; opacity: 0.6 !important; transform: translateY(0) !important;
-            transition: opacity 0.3s ease !important; pointer-events: none;
-        }
-        .expired .donor-item:hover .supporter-popup, .expired .donor-item:focus .supporter-popup, .expired .donor-item:focus-within .supporter-popup {
-             opacity: 0 !important; visibility: hidden !important;
-             transform: translateY(-5px) !important; transition: none !important; box-shadow: none !important;
-        }
+        .expired .donations-list-section { animation: none !important; opacity: 0.6 !important; transform: translateY(0) !important; transition: opacity 0.3s ease !important; pointer-events: none; }
+        .expired .donor-item:hover .supporter-popup, .expired .donor-item:focus .supporter-popup, .expired .donor-item:focus-within .supporter-popup { opacity: 0 !important; visibility: hidden !important; transform: translateY(-5px) !important; transition: none !important; box-shadow: none !important; }
         .expired .donor-item, .expired .donor-name, .expired .donor-name[tabindex="0"] { cursor: default; }
         .expired .donor-name[tabindex="0"]:focus-visible { box-shadow: none; }
-
-        .expired .header, .expired .content > .top-bar, .expired .content > .recipient-info,
-        .expired .content > .separator, .expired .qr-code-container, .expired .qr-overlay,
-        .expired .instructions, .expired .bank-scanner-link, .expired #thank-you-gif-container,
-        .expired .content > .footer-text, .expired .footer-social {
-            animation: none !important; opacity: 1 !important; transform: translateY(0) !important;
-        }
-        .expired .instructions, .expired .footer-text, .expired .amount,
-        .expired #thank-you-gif-container, .expired .footer-social { opacity: 0.6 !important; }
+        .expired .header, .expired .content > .top-bar, .expired .content > .recipient-info, .expired .content > .separator, .expired .qr-code-container, .expired .qr-overlay, .expired .instructions, .expired .bank-scanner-link, .expired #thank-you-gif-container, .expired .content > .footer-text, .expired .footer-social { animation: none !important; opacity: 1 !important; transform: translateY(0) !important; }
+        .expired .instructions, .expired .footer-text, .expired .amount, .expired #thank-you-gif-container, .expired .footer-social { opacity: 0.6 !important; }
         .expired .qr-code-img { opacity: 0.3 !important; }
         .expired .qr-overlay { opacity: 0 !important; }
         .expired .bank-scanner-link { opacity: 0.5 !important; }
         .expired .timer { color: var(--primary-color) !important; }
         .expired .timer-icon { border-color: var(--primary-color) !important; }
-        .expired .bank-scanner-link:focus-visible, .expired .telegram-link:focus-visible {
-            border-color: transparent; box-shadow: none; outline: none;
-        }
+        .expired .social-link:focus-visible { border-color: transparent; box-shadow: none; outline: none; }
 
         /* Accessibility: Respect user preference for reduced motion */
         @media (prefers-reduced-motion: reduce) {
           * { animation: none !important; transition: none !important; }
-          .header, .content > .top-bar, .content > .recipient-info,
-          .content > .separator, .qr-code-container, .instructions,
-          .bank-scanner-link, #thank-you-gif-container, .content > .footer-text,
-          .donations-list-section, .footer-social { opacity: 1 !important; transform: translateY(0) !important; }
+          .header, .content > .top-bar, .content > .recipient-info, .content > .separator, .qr-code-container, .instructions, .bank-scanner-link, #thank-you-gif-container, .content > .footer-text, .donations-list-section, .footer-social { opacity: 1 !important; transform: translateY(0) !important; }
            .qr-overlay { opacity: 0 !important; }
-           .supporter-popup, .donor-name:hover .supporter-popup, .donor-name:focus .supporter-popup, .donor-name:focus-within .supporter-popup {
-               opacity: 0 !important; visibility: hidden !important; transform: translateY(-5px) !important; box-shadow: none !important;
-           }
-            .expired .instructions, .expired .footer-text, .expired .amount,
-            .expired #thank-you-gif-container, .expired .donations-list-section,
-            .expired .footer-social { opacity: 0.6 !important; }
+           .supporter-popup, .donor-name:hover .supporter-popup, .donor-name:focus .supporter-popup, .donor-name:focus-within .supporter-popup { opacity: 0 !important; visibility: hidden !important; transform: translateY(-5px) !important; box-shadow: none !important; }
+            .expired .instructions, .expired .footer-text, .expired .amount, .expired #thank-you-gif-container, .expired .donations-list-section, .expired .footer-social { opacity: 0.6 !important; }
             .expired .qr-code-img { opacity: 0.3 !important; }
             .expired .qr-overlay { opacity: 0 !important; }
             .expired .bank-scanner-link { opacity: 0.5 !important; }
