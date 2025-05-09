@@ -217,7 +217,7 @@
         .donations-list-section.animate-in { animation: fadeSlideUp var(--transition-duration-page-load) ease-out forwards; opacity: 1; transform: translateY(0); transition: none; }
         .donations-list-title {
             font-size: 1.3em; font-weight: bold; color: var(--text-black); margin: 0 auto 10px auto; padding-bottom: 8px;
-            border-bottom: 2px solid var(--border-color-title-underline); display: inline-block; width: auto;
+            border-bottom: 2px solid var(--border-color-title-underline);  width: auto;
             max-width: calc(100% - 20px); text-align: center;
         }
         .donors-list {
