@@ -10,5 +10,7 @@
   { "name": "HONG ROTHA",
     "amount": 2.00 },
   { "name": "EAN PHANET",
-    "amount": 1.25 }
+    "amount": 1.25 },
+  { "name": "LONG PISETH",
+    "amount":5.00 }
 ]
